@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Planner from "./pages/Planner";
 import Session from "./pages/StudySession"
 import Test from "./pages/TestPage"
+import Register from "./pages/Register"
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
         <Route path="/" element={<Navigate to="/login" />} />
 
         <Route path="/login" element={<Auth />} />
+        <Route path="/register" element={<Register />} />
+
+
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/study" element={<Session />} />
         <Route path="/test" element={<Test />} />

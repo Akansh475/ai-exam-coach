@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Onboarding = () => {
   const [examName, setExamName] = useState("");
@@ -6,34 +8,77 @@ const Onboarding = () => {
   const [dailyHours, setDailyHours] = useState("");
   const [pressure, setPressure] = useState("important");
 
+  const navigate = useNavigate();
+
+  const handleOnboarding = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login again");
+      navigate("/login");
+      return;
+    }
+
+    // Validation
+    if (!examName || !examDate || !dailyHours || !pressure) {
+      alert("Please fill all fields");
+      return;
+    }
+    let hoursNumber = 0;
+
+if (dailyHours === "1-2") hoursNumber = 2;
+if (dailyHours === "2-4") hoursNumber = 4;
+if (dailyHours === "4-6") hoursNumber = 6;
+if (dailyHours === "6+") hoursNumber = 7;
+
+
+    try {
+      await axios.post(
+        "http://localhost:5000/api/onboarding",
+        {
+          
+  examName,
+  examDate,
+  dailyStudyTime: hoursNumber,
+  examPressure: pressure,
+
+
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Success → Dashboard
+      navigate("/dashboard");
+
+    } catch (err) {
+      console.log("ONBOARD ERROR:", err.response);
+      alert("Onboarding failed");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-100 px-6 py-14">
-
       <div className="mx-auto max-w-4xl space-y-12">
-
 
         {/* Header */}
         <div className="text-center space-y-4">
-
-          <h1 className="text-5xl font-bold">
-            Build Your Study System
-          </h1>
+          <h1 className="text-5xl font-bold">Build Your Study System</h1>
 
           <p className="text-slate-400 max-w-xl mx-auto">
-            Answer a few questions. We’ll design a focused,
-            realistic plan around your exam.
+            Answer a few questions. We’ll design a focused, realistic plan
+            around your exam.
           </p>
-
         </div>
-
 
         {/* STEP 1 */}
         <Section number="1" title="Your Exam">
-
           <div className="grid md:grid-cols-2 gap-8">
 
             <div>
-
               <label className="text-sm text-slate-400">
                 Exam name / Subject
               </label>
@@ -44,14 +89,10 @@ const Onboarding = () => {
                 placeholder="Digital Signal Processing"
                 className="mt-2 w-full bg-[#020617] border border-slate-800 rounded-xl px-5 py-4 outline-none focus:border-green-400 transition"
               />
-
             </div>
 
             <div>
-
-              <label className="text-sm text-slate-400">
-                Exam date
-              </label>
+              <label className="text-sm text-slate-400">Exam date</label>
 
               <input
                 type="date"
@@ -59,13 +100,10 @@ const Onboarding = () => {
                 onChange={(e) => setExamDate(e.target.value)}
                 className="mt-2 w-full bg-[#020617] border border-slate-800 rounded-xl px-5 py-4 outline-none focus:border-green-400 transition"
               />
-
             </div>
 
           </div>
-
         </Section>
-
 
         {/* STEP 2 */}
         <Section number="2" title="Daily Study Time">
@@ -88,24 +126,15 @@ const Onboarding = () => {
 
         </Section>
 
-
         {/* STEP 3 */}
         <Section number="3" title="Study Material">
 
           <div className="h-40 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-800 bg-[#020617] text-slate-400 space-y-2">
-
-            <p className="font-medium">
-              Upload Syllabus / Notes
-            </p>
-
-            <p className="text-sm">
-              (We’ll connect this later)
-            </p>
-
+            <p className="font-medium">Upload Syllabus / Notes</p>
+            <p className="text-sm">(We’ll connect this later)</p>
           </div>
 
         </Section>
-
 
         {/* STEP 4 */}
         <Section number="4" title="Exam Pressure">
@@ -129,7 +158,6 @@ const Onboarding = () => {
                 desc: "Must score very high",
               },
             ].map((item) => (
-
               <button
                 key={item.id}
                 onClick={() => setPressure(item.id)}
@@ -139,45 +167,36 @@ const Onboarding = () => {
                     : "border-slate-800 hover:border-green-400/40"
                 }`}
               >
-
-                <p className="text-lg font-semibold">
-                  {item.label}
-                </p>
-
-                <p className="mt-1 text-sm text-slate-400">
-                  {item.desc}
-                </p>
-
+                <p className="text-lg font-semibold">{item.label}</p>
+                <p className="mt-1 text-sm text-slate-400">{item.desc}</p>
               </button>
-
             ))}
 
           </div>
 
         </Section>
 
-
         {/* CTA */}
         <div className="bg-[#020617] rounded-2xl p-10 text-center space-y-5">
 
           <p className="text-slate-400 max-w-xl mx-auto">
-            We’ll analyze your inputs and generate a realistic,
-            day-by-day strategy in under a minute.
+            We’ll analyze your inputs and generate a realistic, day-by-day
+            strategy in under a minute.
           </p>
 
-          <button className="w-full py-4 bg-green-500 text-black font-semibold rounded-xl hover:opacity-90 transition">
+          <button
+            onClick={handleOnboarding}
+            className="px-8 py-3 bg-green-600 rounded-lg hover:bg-green-500 transition"
+          >
             Generate My Study Plan
           </button>
 
         </div>
 
-
       </div>
-
     </div>
   );
 };
-
 
 /* =============== Section Wrapper =============== */
 
@@ -191,9 +210,7 @@ const Section = ({ number, title, children }) => {
           {number}
         </div>
 
-        <h2 className="text-2xl font-semibold">
-          {title}
-        </h2>
+        <h2 className="text-2xl font-semibold">{title}</h2>
 
       </div>
 
