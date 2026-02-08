@@ -6,7 +6,7 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Planner from "./pages/Planner";
-import Session from "./pages/StudySession"
+import Study from "./pages/StudySession"
 import Test from "./pages/TestPage"
 import Register from "./pages/Register"
 
@@ -23,7 +23,7 @@ function App() {
 
 
         <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/study" element={<Session />} />
+        <Route path="/study" element={<Study />} />
         <Route path="/test" element={<Test />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/planner" element={<Planner />} />

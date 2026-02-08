@@ -40,7 +40,9 @@ const Auth = () => {
       console.log("LOGIN RESPONSE:", res.data);
 
       // Save token
-      localStorage.setItem("token", res.data.token);
+     localStorage.setItem("token", res.data.token);
+     localStorage.setItem("name", res.data.name);
+
 
       // Redirect to onboarding
       navigate("/onboarding");
