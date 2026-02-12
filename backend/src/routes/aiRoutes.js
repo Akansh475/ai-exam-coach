@@ -4,6 +4,7 @@ const auth = require("../middleware/auth.middleware");
 
 const router = express.Router();
 
-router.post("/study", auth, getStudyAI);
+router.post("/study", getStudyAI);
+
 
 module.exports = router;

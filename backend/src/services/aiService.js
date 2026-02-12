@@ -4,7 +4,7 @@ const OLLAMA_URL = "http://localhost:11434/api/generate";
 
 const generateAI = async (prompt) => {
   const res = await axios.post(OLLAMA_URL, {
-    model: "mistral",
+    model: "phi",
     prompt,
     stream: false,
   });

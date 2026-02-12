@@ -6,14 +6,25 @@ Exam: ${exam}
 Subject: ${subject}
 Topic: ${topic}
 
-Give:
+Respond in this EXACT format:
 
-1. Key concepts
-2. 5 exam questions
-3. Common mistakes
-4. Revision tips
+## Concepts
+- concept 1
+- concept 2
 
-Short. Practical. Exam-focused.
+## Likely Questions
+1. question 1
+2. question 2
+
+## Common Mistakes
+- mistake 1
+- mistake 2
+
+## Revision Tips
+- tip 1
+- tip 2
+
+Be concise and exam-focused.
 `;
 };
 
